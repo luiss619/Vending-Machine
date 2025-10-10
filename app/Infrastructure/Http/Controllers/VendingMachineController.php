@@ -2,12 +2,14 @@
 
 namespace App\Infrastructure\Http\Controllers;
 
+use App\Application\VendingMachine\UseCase\ServiceLoadUseCase;
 use App\Domain\VendingMachine\Service\VendingMachineService;
 use App\Infrastructure\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class VendingMachineController extends Controller
 {
+    private ServiceLoadUseCase $serviceLoadUseCase;
     private VendingMachineService $service;
 
     public function __construct()
@@ -18,6 +20,9 @@ class VendingMachineController extends Controller
             coins_machine: [],
             coins_introduced: []
         );
+        $this->serviceLoadUseCase = new ServiceLoadUseCase($this->service);
+
+        $this->serviceLoadUseCase->execute();
     }
 
     public function index()
