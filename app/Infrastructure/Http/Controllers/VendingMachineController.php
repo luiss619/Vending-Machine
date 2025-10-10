@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
+use App\Application\VendingMachine\DTO\InsertCoinMachineRequestDTO;
 use App\Application\VendingMachine\UseCase\InsertCoinUseCase;
 use App\Application\VendingMachine\UseCase\InsertCoinMachineUseCase;
 use App\Application\VendingMachine\UseCase\ReturnCoinsUseCase;
@@ -70,8 +71,9 @@ class VendingMachineController extends Controller
 
     public function insertCoinMachine(Request $request)
     {
-        $dto = new InsertCoinRequestDTO(
-            coin: (int)$request->input('coin')
+        $dto = new InsertCoinMachineRequestDTO(
+            coin: (int)$request->input('coin'),
+            operation: (string)$request->input('operation')
         );
         $response = $this->insertCoinMachineUseCase->execute($dto);
 

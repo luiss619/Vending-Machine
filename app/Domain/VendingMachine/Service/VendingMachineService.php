@@ -119,12 +119,14 @@ class VendingMachineService
         ]);
     }
 
-    public function insertCoinMachine(int $cents): void
+    public function insertCoinMachine(int $cents, string $operation): void
     {
         if (!isset($this->coins_machine[$cents])) {
             throw new CoinNotAcceptedException($cents / 100);
         }
-        $this->coins_machine[$cents]->increaseQuantity(1);
+
+        $method = $operation === 'add' ? 'increaseQuantity' : 'decreaseQuantity';
+        $this->coins_machine[$cents]->$method();
 
         session([
             'coins_machine' => $this->coins_machine,

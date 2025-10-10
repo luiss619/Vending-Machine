@@ -19,7 +19,19 @@
 }
 
 .btn_coin_machine {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid black !important;
     background: lightyellow !important;
+    color: black !important;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 5px #aaa, 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    cursor: default !important;
 }
 
 .msg_no_coins {

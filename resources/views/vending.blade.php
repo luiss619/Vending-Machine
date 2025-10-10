@@ -52,9 +52,13 @@
                                 <div class="col-12 col-md-3">
                                     <div class="d-flex justify-content-center">
                                         @if($mode === 'service')
-                                            <button class="btn btn-primary btn_coin btn_coin_machine" onclick="insertCoinMachine({{ $coin->getValue() }})">
+                                            <div class="btn btn_coin_machine">
                                                 {{ number_format(($coin->getValue() / 100), 2) }} €
-                                            </button>
+                                            </div>
+                                            <div class="change_coin_machine">
+                                                <button class="btn btn-danger" onclick="insertCoinMachine({{ $coin->getValue() }}, 'subtract')">-</button>
+                                                <button class="btn btn-success" onclick="insertCoinMachine({{ $coin->getValue() }}, 'add')">+</button>
+                                            </div>
                                         @else
                                             <button class="btn btn-primary btn_coin" onclick="insertCoin({{ $coin->getValue() }})">
                                                 {{ number_format(($coin->getValue() / 100), 2) }} €
@@ -164,8 +168,8 @@
                 });
         }
 
-        function insertCoinMachine(coin) {
-            axios.post('/vending/insert-coin-machine', { coin: coin })
+        function insertCoinMachine(coin, operation) {
+            axios.post('/vending/insert-coin-machine', { coin: coin, operation: operation })
                 .then(res => {
                     if (res.data.error) {
                         showMessage(res.data.error, 'error');
