@@ -14,4 +14,5 @@ Route::prefix('vending')->group(function () {
     Route::post('/buy-item', [VendingMachineController::class, 'buyItem']);
 
     Route::post('/update-coins-machine', [VendingMachineController::class, 'updateCoinsMachine']);
+    Route::post('/update-stock-product', [VendingMachineController::class, 'updateStockProduct']);
 });

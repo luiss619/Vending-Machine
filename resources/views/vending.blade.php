@@ -22,11 +22,15 @@
                             @foreach($products as $product)
                                 <div class="col-12 col-md-4 text-center">
                                     @if($mode === 'service')
-                                        <button class="btn btn_product btn_product_stock" onclick="addStockProduct('{{ $product->getSku() }}')">
+                                        <div class="btn btn_product_stock">
                                             <img src="{{ $product->getImage() }}" class="img_product" />
                                             <b>{{ $product->getName() }}</b> [{{ number_format($product->getPriceInEuros(), 2) }} €]<br>
                                             Stock: <span id="stock_{{ $product->getSku() }}">{{ $product->getStock() }}</span>
-                                        </button>
+                                        </div>
+                                        <div class="change_coin_machine">
+                                            <button class="btn btn-danger" onclick="updateStockProduct(`{{ $product->getSku() }}`, 'subtract')">-</button>
+                                            <button class="btn btn-success" onclick="updateStockProduct(`{{ $product->getSku() }}`, 'add')">+</button>
+                                        </div>
                                     @else
                                         <button class="btn btn_product" onclick="buyProduct('{{ $product->getSku() }}')">
                                             <img src="{{ $product->getImage() }}" class="img_product" />
@@ -198,6 +202,17 @@
                         showMessage(res.data.error, 'error');
                     } else {
                         renderTable(table_coins_machine, res.data.coins_machine);
+                    }                    
+                });
+        }
+
+        function updateStockProduct(sku, operation) {
+            axios.post('/vending/update-stock-product', { sku: sku, operation: operation })
+                .then(res => {
+                    if (res.data.error) {
+                        showMessage(res.data.error, 'error');
+                    } else {
+                        document.getElementById('stock_' + sku).innerText = res.data.new_stock;
                     }                    
                 });
         }

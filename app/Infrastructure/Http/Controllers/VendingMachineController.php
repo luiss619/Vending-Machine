@@ -4,8 +4,10 @@ namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
 use App\Application\VendingMachine\DTO\UpdateCoinsMachineRequestDTO;
+use App\Application\VendingMachine\DTO\UpdateStockRequestDTO;
 use App\Application\VendingMachine\UseCase\InsertCoinUseCase;
 use App\Application\VendingMachine\UseCase\UpdateCoinsMachineUseCase;
+use App\Application\VendingMachine\UseCase\UpdateStockProductUseCase;
 use App\Application\VendingMachine\UseCase\ReturnCoinsUseCase;
 use App\Application\VendingMachine\UseCase\ServiceLoadUseCase;
 use App\Domain\VendingMachine\Service\VendingMachineService;
@@ -16,6 +18,7 @@ class VendingMachineController extends Controller
 {
     private InsertCoinUseCase $insertCoinUseCase;
     private UpdateCoinsMachineUseCase $updateCoinsMachineUseCase;
+    private UpdateStockProductUseCase $updateStockProductUseCase;
     private ReturnCoinsUseCase $returnCoinsUseCase;
     private ServiceLoadUseCase $serviceLoadUseCase;
     private VendingMachineService $service;
@@ -30,6 +33,7 @@ class VendingMachineController extends Controller
         );
         $this->insertCoinUseCase = new InsertCoinUseCase($this->service);
         $this->updateCoinsMachineUseCase = new UpdateCoinsMachineUseCase($this->service);
+        $this->updateStockProductUseCase = new UpdateStockProductUseCase($this->service);
         $this->returnCoinsUseCase = new ReturnCoinsUseCase($this->service);
         $this->serviceLoadUseCase = new ServiceLoadUseCase($this->service);
 
@@ -76,6 +80,17 @@ class VendingMachineController extends Controller
             operation: (string)$request->input('operation')
         );
         $response = $this->updateCoinsMachineUseCase->execute($dto);
+
+        return response()->json($response);
+    }
+
+    public function updateStockProduct(Request $request)
+    {
+        $dto = new UpdateStockRequestDTO(
+            sku: (string)$request->input('sku'),
+            operation: (string)$request->input('operation')
+        );
+        $response = $this->updateStockProductUseCase->execute($dto);
 
         return response()->json($response);
     }

@@ -4,7 +4,9 @@ namespace App\Domain\VendingMachine\Service;
 
 use App\Domain\VendingMachine\Entity\Coin;
 use App\Domain\VendingMachine\Exception\CoinNotAcceptedException;
+use App\Domain\VendingMachine\Exception\ProductNotAcceptedException;
 use App\Domain\VendingMachine\Exception\InsufficientCoinsException;
+use App\Domain\VendingMachine\Exception\InsufficientStockException;
 
 class VendingMachineService
 {
@@ -136,19 +138,26 @@ class VendingMachineService
         session([
             'coins_machine' => $this->coins_machine,
         ]);
+    }
 
-        /*
-        try {
-            $method = $operation === 'add' ? 'increaseQuantity' : 'decreaseQuantity';
-            $this->coins_machine[$cents]->$method();
-
-            session([
-                'coins_machine' => $this->coins_machine,
-            ]);
-        } catch (InsufficientCoinsException $e) {
-            throw new InsufficientCoinsException($cents, 1, $this->coins_machine[$cents]->getQuantity());
+    public function updateStockProduct(string $sku, string $operation): array
+    {
+        if (!isset($this->products[$sku])) {
+            throw new ProductNotAcceptedException($sku);
         }
-            */
+
+        $method = $operation === 'add' ? 'increaseStock' : 'decreaseStock';
+        $this->products[$sku]->$method();
+
+        if ($this->products[$sku]->getStock() < 0) {
+            throw new InsufficientStockException($sku, 1, $this->products[$sku]->getStock());
+        }
+
+        session([
+            'products' => $this->products,
+        ]);
+
+        return ['new_stock' => $this->products[$sku]->getStock()];
     }
 
     public function returnCoins(): void

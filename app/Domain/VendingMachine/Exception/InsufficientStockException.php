@@ -4,25 +4,25 @@ namespace App\Domain\VendingMachine\Exception;
 
 use Exception;
 
-class InsufficientCoinsException extends Exception
+class InsufficientStockException extends Exception
 {
-    private int $coin;
+    private string $sku;
     private int $requested;
     private int $available;
 
-    public function __construct(int $coin, int $requested, int $available)
+    public function __construct(string $sku, int $requested, int $available)
     {
         parent::__construct(
-            "Cannot remove $requested coin of " . number_format($coin / 100, 2) . " €. Only $available available."
+            "Cannot remove $requested of " . $sku . " stock."
         );
-        $this->coin = $coin;
+        $this->sku = $sku;
         $this->requested = $requested;
         $this->available = $available;
     }
 
-    public function getCoin(): int
+    public function getSku(): int
     {
-        return $this->coin;
+        return $this->sku;
     }
 
     public function getRequested(): int

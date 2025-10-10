@@ -2,6 +2,8 @@
 
 namespace App\Domain\VendingMachine\Entity;
 
+use App\Domain\VendingMachine\Exception\InsufficientStockException;
+
 class Product
 {
     private string $name;
@@ -61,6 +63,10 @@ class Product
 
     public function decreaseStock(int $stock = 1): void
     {
+        if ($this->stock - $stock < 0) {
+            throw new InsufficientStockException($this->sku, $stock, $this->stock);
+        }
+
         $this->stock -= $stock;
     }
 }
