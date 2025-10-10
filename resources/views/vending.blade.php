@@ -21,29 +21,63 @@
                         <div class="row">
                             @foreach($products as $product)
                                 <div class="col-12 col-md-4 text-center">
-                                    <button class="btn btn-default btn_product" onclick="buyProduct('{{ $product->getSku() }}')">
-                                        <img src="{{ $product->getImage() }}" class="img_product" />
-                                        <b>{{ $product->getName() }}</b> [{{ number_format($product->getPriceInEuros(), 2) }} €]<br>
-                                        Stock: <span id="stock_{{ $product->getSku() }}">{{ $product->getStock() }}</span>
-                                    </button>
+                                    @if($mode === 'service')
+                                        <button class="btn btn_product btn_product_stock" onclick="addStockProduct('{{ $product->getSku() }}')">
+                                            <img src="{{ $product->getImage() }}" class="img_product" />
+                                            <b>{{ $product->getName() }}</b> [{{ number_format($product->getPriceInEuros(), 2) }} €]<br>
+                                            Stock: <span id="stock_{{ $product->getSku() }}">{{ $product->getStock() }}</span>
+                                        </button>
+                                    @else
+                                        <button class="btn btn_product" onclick="buyProduct('{{ $product->getSku() }}')">
+                                            <img src="{{ $product->getImage() }}" class="img_product" />
+                                            <b>{{ $product->getName() }}</b> [{{ number_format($product->getPriceInEuros(), 2) }} €]<br>
+                                            Stock: <span id="stock_{{ $product->getSku() }}">{{ $product->getStock() }}</span>
+                                        </button>
+                                    @endif
                                 </div>
                             @endforeach
+                            @if($mode === 'service')
+                                <div class="col-12 text-center mt-4">
+                                    <span>Click on each product to add stock it into the machine.</span>
+                                </div>                                
+                            @endif
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">Insert Coins</div>
                     <div class="card-body">
                         <div class="row">
                             @foreach($coins as $coin)
                                 <div class="col-12 col-md-3">
                                     <div class="d-flex justify-content-center">
-                                        <button class="btn btn-primary btn_coin" onclick="insertCoin({{ $coin->getValue() }})">
-                                            {{ number_format(($coin->getValue() / 100), 2) }} €
-                                        </button>
+                                        @if($mode === 'service')
+                                            <button class="btn btn-primary btn_coin btn_coin_machine" onclick="insertCoinMachine({{ $coin->getValue() }})">
+                                                {{ number_format(($coin->getValue() / 100), 2) }} €
+                                            </button>
+                                        @else
+                                            <button class="btn btn-primary btn_coin" onclick="insertCoin({{ $coin->getValue() }})">
+                                                {{ number_format(($coin->getValue() / 100), 2) }} €
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
+                            @if($mode === 'service')
+                                <div class="col-12 text-center mt-4">
+                                    <span>Click on each coin to insert it into the machine.</span>
+                                </div>                                
+                            @endif
+                        </div>
+                    </div>
+                </div><hr>
+                <div class="card p-3">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <a class="btn btn-default btn_change_mode {{ $mode !== 'service' ? 'btn_change_mode_active' : '' }}" href="/vending">MODE CLIENT</a>
+                        </div>
+                        <div class="col-6 text-center">
+                            <a class="btn btn-default btn_change_mode {{ $mode === 'service' ? 'btn_change_mode_active' : '' }}" href="/vending?mode=service">MODE SERVICE</a>
                         </div>
                     </div>
                 </div>
@@ -57,24 +91,28 @@
                         <div class="col-6 text-end">
                             <h4><span id="balance">{{ number_format($balance, 2, '.', '') }}</span> €</h4>
                         </div>
-                    </div><hr>
-                    <button class="btn btn-primary" onclick="returnCoin()">Return Coin</button>
+                    </div>
+                    @if($mode !== 'service')
+                        <hr><button class="btn btn-primary" onclick="returnCoin()">Return Coin</button>
+                    @endif
                     <div class="text-center">
                         <div id="message" class="mt-2"></div>
                     </div>                    
                 </div>
-                <div class="card p-3 mb-3">
-                    <div id="coins_machine" class="text-center"></div>
+                <div id="coins_machine" class="text-center card p-3 mb-3 {{ $mode !== 'service' ? 'd-none' : '' }}">
+                    <p class="mb-0">Coins Machine</p>
+                    <div id="coins_machine_table"></div>
                 </div>
-                <div class="card p-3 mb-3">
-                    <div id="coins_introduced" class="text-center"></div>
-                </div>                                
+                <div id="coins_introduced" class="text-center card p-3 mb-3 {{ $mode === 'service' ? 'd-none' : '' }}">
+                    <p class="mb-0">Coins Introduced</p>
+                    <div id="coins_introduced_table"></div>
+                </div>                     
             </div>
         </div>        
     </div>
     <script>
-        let table_coins_machine = 'coins_machine';
-        let table_coins_introduced = 'coins_introduced';
+        let table_coins_machine = 'coins_machine_table';
+        let table_coins_introduced = 'coins_introduced_table';
 
         document.addEventListener("DOMContentLoaded", function () {
             updateBalance({{ $balance }});
@@ -84,11 +122,6 @@
 
         function renderTable(target_id, data) {
             let html = '';
-            if(target_id == 'coins_introduced') {
-                html = '<p class="mb-0">Coins Introduced</p>';
-            } else {
-                html = '<p class="mb-0">Coins Machine</p>';
-            }
             if (!data || Object.keys(data).length === 0) {
                 html += '<div class="text-center"><p class="mb-0 msg_no_coins">Empty</p></div>';
             } else {

@@ -32,9 +32,12 @@ class VendingMachineController extends Controller
         $this->serviceLoadUseCase->execute();
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $mode = $request->mode;
+
         return view('vending', [
+            'mode' => $mode,
             'products' => $this->service->getProducts(),
             'balance' => $this->service->getBalanceEuro(),
             'coins' => $this->service->getCoinsMachine(),
