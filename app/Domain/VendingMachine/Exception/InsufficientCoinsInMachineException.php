@@ -12,9 +12,12 @@ class InsufficientCoinsInMachineException extends Exception
 
     public function __construct(int $cents, int $price_in_cents, string $product_name)
     {
+        $change_in_euro = number_format($cents / 100, 2);
+        $price_in_euro = number_format($cents / 100, 2);
+
         parent::__construct(
-            "The following amount of change is missing: " . number_format($cents / 100, 2) . " €. <br>
-            Please try to enter the exact amount (" . number_format($price_in_cents / 100, 2) . " €) to " . $product_name
+            "The following amount of change is missing: " . $change_in_euro . " €. <br>
+            Please try to enter the exact amount (" . $price_in_euro . " €) to " . $product_name
         );
 
         $this->cents = $cents;

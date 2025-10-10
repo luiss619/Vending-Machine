@@ -6,16 +6,13 @@ use Exception;
 
 class CoinNotAcceptedException extends Exception
 {
-    private float $coin;
+    private int $cents;
 
-    public function __construct(float $coin)
+    public function __construct(int $cents)
     {
-        parent::__construct("Coin " . number_format($coin, 2) . " € not accepted");
-        $this->coin = $coin;
-    }
+        $coin = number_format($cents / 100, 2);
 
-    public function getCoin(): float
-    {
-        return $this->coin;
+        parent::__construct("Coin " . $coin . " € not accepted");
+        $this->cents = $cents;
     }
 }

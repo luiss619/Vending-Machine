@@ -12,7 +12,9 @@ class InsufficientBalanceException extends Exception
 
     public function __construct(float $required, float $available, string $productName)
     {
-        parent::__construct("Not enough money for $productName");
+        $missing = number_format(($required - $available) / 100, 2);
+
+        parent::__construct("Not enough money for $productName.<br> Missing: $missing €");
         $this->required = $required;
         $this->available = $available;
         $this->productName = $productName;

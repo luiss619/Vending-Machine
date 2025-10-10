@@ -12,8 +12,12 @@ class InsufficientCoinsException extends Exception
 
     public function __construct(int $coin, int $requested, int $available)
     {
+        $coin = number_format($coin / 100, 2);
+        $message = "Cannot remove $requested coin of {$coin} €. <br>" .
+            ($available == 0 ? "No coins available." : "Only $available available.");
+
         parent::__construct(
-            "Cannot remove $requested coin of " . number_format($coin / 100, 2) . " €. Only $available available."
+            $message
         );
         $this->coin = $coin;
         $this->requested = $requested;

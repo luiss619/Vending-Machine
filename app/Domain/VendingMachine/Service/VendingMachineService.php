@@ -110,7 +110,7 @@ class VendingMachineService
     public function insertCoin(int $cents): void
     {
         if (!isset($this->coins_machine[$cents])) {
-            throw new CoinNotAcceptedException($cents / 100);
+            throw new CoinNotAcceptedException($cents);
         }
         $this->balance += $cents;
         $this->coins_machine[$cents]->increaseQuantity(1);
@@ -230,7 +230,7 @@ class VendingMachineService
     public function updateCoinsMachine(int $cents, string $operation): void
     {
         if (!isset($this->coins_machine[$cents])) {
-            throw new CoinNotAcceptedException($cents / 100);
+            throw new CoinNotAcceptedException($cents);
         }
 
         $method = $operation === 'add' ? 'increaseQuantity' : 'decreaseQuantity';
