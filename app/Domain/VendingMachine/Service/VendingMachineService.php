@@ -34,6 +34,11 @@ class VendingMachineService
         return $this->balance;
     }
 
+    public function getBalanceEuro(): float
+    {
+        return ($this->balance / 100);
+    }
+
     public function getProducts(): array
     {
         return $this->products;

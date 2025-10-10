@@ -33,7 +33,7 @@ class VendingMachineController extends Controller
     {
         return view('vending', [
             'products' => $this->service->getProducts(),
-            'balance' => $this->service->getBalance(),
+            'balance' => $this->service->getBalanceEuro(),
             'coins' => $this->service->getCoinsMachine(),
             'coins_machine' => $this->service->getCoinsMachineData(),
             'coins_introduced' => $this->service->getCoinsIntroducedData(),

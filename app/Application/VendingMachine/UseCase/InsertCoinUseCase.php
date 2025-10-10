@@ -23,13 +23,13 @@ class InsertCoinUseCase
             $this->service->insertCoin((int) $request->coin);
 
             return new ChangeCoinsResponseDTO(
-                balance: $this->service->getBalance(),
+                balance: $this->service->getBalanceEuro(),
                 coins_machine: $this->service->getCoinsMachineData(),
                 coins_introduced: $this->service->getCoinsIntroducedData(),
             );
         } catch (CoinNotAcceptedException $e) {
             return new ErrorResponseDTO(
-                balance: $this->service->getBalance(),
+                balance: $this->service->getBalanceEuro(),
                 error: $e->getMessage()
             );
         }
