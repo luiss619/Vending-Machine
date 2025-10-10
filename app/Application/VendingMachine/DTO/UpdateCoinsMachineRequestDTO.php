@@ -2,7 +2,7 @@
 
 namespace App\Application\VendingMachine\DTO;
 
-class InsertCoinMachineRequestDTO
+class UpdateCoinsMachineRequestDTO
 {
     public float $coin = 0;
     public string $operation = '';

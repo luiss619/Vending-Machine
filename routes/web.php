@@ -13,5 +13,5 @@ Route::prefix('vending')->group(function () {
     Route::post('/return-coin', [VendingMachineController::class, 'returnCoins']);
     Route::post('/buy-item', [VendingMachineController::class, 'buyItem']);
 
-    Route::post('/insert-coin-machine', [VendingMachineController::class, 'insertCoinMachine']);
+    Route::post('/update-coins-machine', [VendingMachineController::class, 'updateCoinsMachine']);
 });

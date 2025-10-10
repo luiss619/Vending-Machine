@@ -56,8 +56,8 @@
                                                 {{ number_format(($coin->getValue() / 100), 2) }} €
                                             </div>
                                             <div class="change_coin_machine">
-                                                <button class="btn btn-danger" onclick="insertCoinMachine({{ $coin->getValue() }}, 'subtract')">-</button>
-                                                <button class="btn btn-success" onclick="insertCoinMachine({{ $coin->getValue() }}, 'add')">+</button>
+                                                <button class="btn btn-danger" onclick="updateCoinsMachine({{ $coin->getValue() }}, 'subtract')">-</button>
+                                                <button class="btn btn-success" onclick="updateCoinsMachine({{ $coin->getValue() }}, 'add')">+</button>
                                             </div>
                                         @else
                                             <button class="btn btn-primary btn_coin" onclick="insertCoin({{ $coin->getValue() }})">
@@ -168,17 +168,6 @@
                 });
         }
 
-        function insertCoinMachine(coin, operation) {
-            axios.post('/vending/insert-coin-machine', { coin: coin, operation: operation })
-                .then(res => {
-                    if (res.data.error) {
-                        showMessage(res.data.error, 'error');
-                    } else {
-                        renderTable(table_coins_machine, res.data.coins_machine);
-                    }                    
-                });
-        }
-
         function returnCoin() {
             axios.post('/vending/return-coin')
                 .then(res => {
@@ -202,9 +191,16 @@
                 });
         }
 
-        
-
-        
+        function updateCoinsMachine(coin, operation) {
+            axios.post('/vending/update-coins-machine', { coin: coin, operation: operation })
+                .then(res => {
+                    if (res.data.error) {
+                        showMessage(res.data.error, 'error');
+                    } else {
+                        renderTable(table_coins_machine, res.data.coins_machine);
+                    }                    
+                });
+        }
     </script>
 </body>
 </html>
