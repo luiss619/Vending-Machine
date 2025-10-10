@@ -20,7 +20,16 @@ class VendingMachineController extends Controller
         );
     }
 
-    public function index() {}
+    public function index()
+    {
+        return view('vending', [
+            'products' => $this->service->getProducts(),
+            'balance' => $this->service->getBalance(),
+            'coins' => $this->service->getCoinsMachine(),
+            'coins_machine' => $this->service->getCoinsMachineData(),
+            'coins_introduced' => $this->service->getCoinsIntroducedData(),
+        ]);
+    }
 
     public function insertCoin(Request $request) {}
 
