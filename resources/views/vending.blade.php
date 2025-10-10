@@ -164,6 +164,17 @@
                 });
         }
 
+        function insertCoinMachine(coin) {
+            axios.post('/vending/insert-coin-machine', { coin: coin })
+                .then(res => {
+                    if (res.data.error) {
+                        showMessage(res.data.error, 'error');
+                    } else {
+                        renderTable(table_coins_machine, res.data.coins_machine);
+                    }                    
+                });
+        }
+
         function returnCoin() {
             axios.post('/vending/return-coin')
                 .then(res => {
@@ -186,6 +197,10 @@
                     showMessage('Coins returned:<br>' + parts.join('<br>'), 'blink');
                 });
         }
+
+        
+
+        
     </script>
 </body>
 </html>
