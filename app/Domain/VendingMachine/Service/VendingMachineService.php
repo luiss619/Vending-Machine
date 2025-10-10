@@ -4,6 +4,7 @@ namespace App\Domain\VendingMachine\Service;
 
 use App\Domain\VendingMachine\Entity\Coin;
 use App\Domain\VendingMachine\Exception\CoinNotAcceptedException;
+use App\Domain\VendingMachine\Exception\InsufficientCoinsException;
 
 class VendingMachineService
 {
@@ -119,7 +120,7 @@ class VendingMachineService
         ]);
     }
 
-    public function insertCoinMachine(int $cents, string $operation): void
+    public function updateCoinsMachine(int $cents, string $operation): void
     {
         if (!isset($this->coins_machine[$cents])) {
             throw new CoinNotAcceptedException($cents / 100);
@@ -128,9 +129,26 @@ class VendingMachineService
         $method = $operation === 'add' ? 'increaseQuantity' : 'decreaseQuantity';
         $this->coins_machine[$cents]->$method();
 
+        if ($this->coins_machine[$cents]->getQuantity() < 0) {
+            throw new InsufficientCoinsException($cents, 1, $this->coins_machine[$cents]->getQuantity());
+        }
+
         session([
             'coins_machine' => $this->coins_machine,
         ]);
+
+        /*
+        try {
+            $method = $operation === 'add' ? 'increaseQuantity' : 'decreaseQuantity';
+            $this->coins_machine[$cents]->$method();
+
+            session([
+                'coins_machine' => $this->coins_machine,
+            ]);
+        } catch (InsufficientCoinsException $e) {
+            throw new InsufficientCoinsException($cents, 1, $this->coins_machine[$cents]->getQuantity());
+        }
+            */
     }
 
     public function returnCoins(): void

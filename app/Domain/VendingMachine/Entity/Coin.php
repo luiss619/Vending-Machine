@@ -2,6 +2,8 @@
 
 namespace App\Domain\VendingMachine\Entity;
 
+use App\Domain\VendingMachine\Exception\InsufficientCoinsException;
+
 class Coin
 {
     private int $value;
@@ -35,6 +37,10 @@ class Coin
 
     public function decreaseQuantity(int $amount = 1): void
     {
+        if ($this->quantity - $amount < 0) {
+            throw new InsufficientCoinsException($this->value, $amount, $this->quantity);
+        }
+
         $this->quantity -= $amount;
     }
 }

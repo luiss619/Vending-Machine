@@ -3,6 +3,7 @@
 namespace App\Application\VendingMachine\UseCase;
 
 use App\Domain\VendingMachine\Exception\CoinNotAcceptedException;
+use App\Domain\VendingMachine\Exception\InsufficientCoinsException;
 use App\Domain\VendingMachine\Service\VendingMachineService;
 use App\Application\VendingMachine\DTO\UpdateCoinsMachineRequestDTO;
 use App\Application\VendingMachine\DTO\ChangeCoinsResponseDTO;
@@ -20,14 +21,14 @@ class UpdateCoinsMachineUseCase
     public function execute(UpdateCoinsMachineRequestDTO $request): ChangeCoinsResponseDTO|ErrorResponseDTO
     {
         try {
-            $this->service->insertCoinMachine((int) $request->coin, (string) $request->operation);
+            $this->service->updateCoinsMachine((int) $request->coin, (string) $request->operation);
 
             return new ChangeCoinsResponseDTO(
                 balance: $this->service->getBalanceEuro(),
                 coins_machine: $this->service->getCoinsMachineData(),
                 coins_introduced: $this->service->getCoinsIntroducedData(),
             );
-        } catch (CoinNotAcceptedException $e) {
+        } catch (CoinNotAcceptedException | InsufficientCoinsException $e) {
             return new ErrorResponseDTO(
                 balance: $this->service->getBalanceEuro(),
                 error: $e->getMessage()
