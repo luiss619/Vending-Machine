@@ -104,6 +104,19 @@
         function updateBalance(value) {
             document.getElementById('balance').innerText = value.toFixed(2);
         }
+
+        function insertCoin(coin) {
+            axios.post('/vending/insert-coin', { coin: coin })
+                .then(res => {
+                    if (res.data.error) {
+                        showMessage(res.data.error, 'error');
+                    } else {
+                        renderTable(table_coins_machine, res.data.coins_machine);
+                        renderTable(table_coins_introduced, res.data.coins_introduced);
+                        updateBalance(res.data.balance);
+                    }                    
+                });
+        }
     </script>
 </body>
 </html>

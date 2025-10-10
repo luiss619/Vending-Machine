@@ -2,6 +2,8 @@
 
 namespace App\Domain\VendingMachine\Service;
 
+use App\Domain\VendingMachine\Entity\Coin;
+
 class VendingMachineService
 {
     private int $balance = 0;
@@ -92,5 +94,22 @@ class VendingMachineService
         foreach ($coins_introduced as $coin) {
             $this->coins_introduced[$coin->getValue()] = $coin;
         }
+    }
+
+    public function insertCoin(int $cents): void
+    {
+        if (!isset($this->coins_machine[$cents])) {
+            abort(400, 'Coin not accepted');
+        }
+        $this->balance += $cents;
+        $this->coins_machine[$cents]->increaseQuantity(1);
+        $this->coins_introduced[$cents] = $this->coins_introduced[$cents] ?? new Coin($cents / 100, 0);
+        $this->coins_introduced[$cents]->increaseQuantity();
+
+        session([
+            'balance' => $this->balance,
+            'coins_machine' => $this->coins_machine,
+            'coins_introduced' => $this->coins_introduced,
+        ]);
     }
 }
