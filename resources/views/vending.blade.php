@@ -14,7 +14,7 @@
             <h1>Vending Machine</h1><hr>
         </div>
         <div class="row">
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-8">
                 <div class="card mb-5">
                     <div class="card-header">Products</div>
                     <div class="card-body">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
                 <div class="card p-3 mb-3">
                     <div class="row">
                         <div class="col-6">
@@ -157,6 +157,21 @@
                     el.innerHTML = '';
                 }, 3000);
             }
+        }
+
+        function buyProduct(sku) {
+            axios.post('/vending/buy-item', { sku: sku })
+                .then(res => {
+                    if (res.data.error) {
+                        showMessage(res.data.error, 'error');
+                    } else {
+                        document.getElementById('stock_' + sku).innerText = res.data.new_stock;
+                        showMessage(`${res.data.change_message}`, 'blink');
+                        updateBalance(res.data.balance);
+                        renderTable(table_coins_machine, res.data.coins_machine);
+                        renderTable(table_coins_introduced, {});
+                    }
+                });
         }
 
         function insertCoin(coin) {

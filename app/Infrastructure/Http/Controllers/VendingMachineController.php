@@ -2,9 +2,11 @@
 
 namespace App\Infrastructure\Http\Controllers;
 
+use App\Application\VendingMachine\DTO\BuyItemRequestDTO;
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
 use App\Application\VendingMachine\DTO\UpdateCoinsMachineRequestDTO;
 use App\Application\VendingMachine\DTO\UpdateStockRequestDTO;
+use App\Application\VendingMachine\UseCase\BuyItemUseCase;
 use App\Application\VendingMachine\UseCase\InsertCoinUseCase;
 use App\Application\VendingMachine\UseCase\UpdateCoinsMachineUseCase;
 use App\Application\VendingMachine\UseCase\UpdateStockProductUseCase;
@@ -16,6 +18,7 @@ use Illuminate\Http\Request;
 
 class VendingMachineController extends Controller
 {
+    private BuyItemUseCase $buyItemUseCase;
     private InsertCoinUseCase $insertCoinUseCase;
     private UpdateCoinsMachineUseCase $updateCoinsMachineUseCase;
     private UpdateStockProductUseCase $updateStockProductUseCase;
@@ -31,6 +34,7 @@ class VendingMachineController extends Controller
             coins_machine: [],
             coins_introduced: []
         );
+        $this->buyItemUseCase = new BuyItemUseCase($this->service);
         $this->insertCoinUseCase = new InsertCoinUseCase($this->service);
         $this->updateCoinsMachineUseCase = new UpdateCoinsMachineUseCase($this->service);
         $this->updateStockProductUseCase = new UpdateStockProductUseCase($this->service);
@@ -71,7 +75,15 @@ class VendingMachineController extends Controller
         return response()->json($response);
     }
 
-    public function buyItem(Request $request) {}
+    public function buyItem(Request $request)
+    {
+        $dto = new BuyItemRequestDTO(
+            sku: (string)$request->input('sku')
+        );
+        $response = $this->buyItemUseCase->execute($dto);
+
+        return response()->json($response);
+    }
 
     public function updateCoinsMachine(Request $request)
     {
