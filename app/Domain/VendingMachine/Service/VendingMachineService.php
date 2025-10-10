@@ -3,6 +3,7 @@
 namespace App\Domain\VendingMachine\Service;
 
 use App\Domain\VendingMachine\Entity\Coin;
+use App\Domain\VendingMachine\Exception\CoinNotAcceptedException;
 
 class VendingMachineService
 {
@@ -99,7 +100,7 @@ class VendingMachineService
     public function insertCoin(int $cents): void
     {
         if (!isset($this->coins_machine[$cents])) {
-            abort(400, 'Coin not accepted');
+            throw new CoinNotAcceptedException($cents / 100);
         }
         $this->balance += $cents;
         $this->coins_machine[$cents]->increaseQuantity(1);

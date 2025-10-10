@@ -2,9 +2,11 @@
 
 namespace App\Application\VendingMachine\UseCase;
 
+use App\Domain\VendingMachine\Exception\CoinNotAcceptedException;
 use App\Domain\VendingMachine\Service\VendingMachineService;
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
 use App\Application\VendingMachine\DTO\ChangeCoinsResponseDTO;
+use App\Application\VendingMachine\DTO\ErrorResponseDTO;
 
 class InsertCoinUseCase
 {
@@ -15,14 +17,21 @@ class InsertCoinUseCase
         $this->service = $service;
     }
 
-    public function execute(InsertCoinRequestDTO $request): ChangeCoinsResponseDTO
+    public function execute(InsertCoinRequestDTO $request): ChangeCoinsResponseDTO|ErrorResponseDTO
     {
-        $this->service->insertCoin((int) $request->coin);
+        try {
+            $this->service->insertCoin((int) $request->coin);
 
-        return new ChangeCoinsResponseDTO(
-            balance: $this->service->getBalance(),
-            coins_machine: $this->service->getCoinsMachineData(),
-            coins_introduced: $this->service->getCoinsIntroducedData(),
-        );
+            return new ChangeCoinsResponseDTO(
+                balance: $this->service->getBalance(),
+                coins_machine: $this->service->getCoinsMachineData(),
+                coins_introduced: $this->service->getCoinsIntroducedData(),
+            );
+        } catch (CoinNotAcceptedException $e) {
+            return new ErrorResponseDTO(
+                balance: $this->service->getBalance(),
+                error: $e->getMessage()
+            );
+        }
     }
 }
