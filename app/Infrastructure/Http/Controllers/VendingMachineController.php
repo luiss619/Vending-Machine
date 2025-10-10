@@ -4,6 +4,7 @@ namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
 use App\Application\VendingMachine\UseCase\InsertCoinUseCase;
+use App\Application\VendingMachine\UseCase\ReturnCoinsUseCase;
 use App\Application\VendingMachine\UseCase\ServiceLoadUseCase;
 use App\Domain\VendingMachine\Service\VendingMachineService;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 class VendingMachineController extends Controller
 {
     private InsertCoinUseCase $insertCoinUseCase;
+    private ReturnCoinsUseCase $returnCoinsUseCase;
     private ServiceLoadUseCase $serviceLoadUseCase;
     private VendingMachineService $service;
 
@@ -24,6 +26,7 @@ class VendingMachineController extends Controller
             coins_introduced: []
         );
         $this->insertCoinUseCase = new InsertCoinUseCase($this->service);
+        $this->returnCoinsUseCase = new ReturnCoinsUseCase($this->service);
         $this->serviceLoadUseCase = new ServiceLoadUseCase($this->service);
 
         $this->serviceLoadUseCase->execute();
@@ -50,7 +53,12 @@ class VendingMachineController extends Controller
         return response()->json($response);
     }
 
-    public function returnCoins() {}
+    public function returnCoins()
+    {
+        $response = $this->returnCoinsUseCase->execute();
+
+        return response()->json($response);
+    }
 
     public function buyItem(Request $request) {}
 }

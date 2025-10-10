@@ -105,6 +105,19 @@
             document.getElementById('balance').innerText = value.toFixed(2);
         }
 
+        function showMessage(msg, class_name = '') {
+            const el = document.getElementById('message');
+            el.innerHTML = msg;
+
+            if (class_name) {
+                el.classList.add(class_name);
+                setTimeout(() => {
+                    el.classList.remove(class_name);
+                    el.innerHTML = '';
+                }, 3000);
+            }
+        }
+
         function insertCoin(coin) {
             axios.post('/vending/insert-coin', { coin: coin })
                 .then(res => {
@@ -115,6 +128,29 @@
                         renderTable(table_coins_introduced, res.data.coins_introduced);
                         updateBalance(res.data.balance);
                     }                    
+                });
+        }
+
+        function returnCoin() {
+            axios.post('/vending/return-coin')
+                .then(res => {
+                    updateBalance(res.data.balance);
+                    renderTable(table_coins_machine, res.data.coins_machine);
+                    renderTable(table_coins_introduced, {});
+
+                    const coins_introduced = res.data.coins_introduced;
+
+                    if (!coins_introduced || Object.keys(coins_introduced).length === 0) {
+                        showMessage('There are no coins to return', 'blink');
+                        return;
+                    }
+
+                    let parts = [];
+                    for (const [coin, qty] of Object.entries(coins_introduced)) {
+                        parts.push(`${qty} x ${(coin / 100).toFixed(2)} €`);
+                    }
+
+                    showMessage('Coins returned:<br>' + parts.join('<br>'), 'blink');
                 });
         }
     </script>

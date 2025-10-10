@@ -118,4 +118,21 @@ class VendingMachineService
             'coins_introduced' => $this->coins_introduced,
         ]);
     }
+
+    public function returnCoins(): void
+    {
+        foreach ($this->coins_introduced as $coin) {
+            $value = $coin->getValue();
+            $quantity = $coin->getQuantity();
+            $this->coins_machine[$value]->decreaseQuantity($quantity);
+        }
+
+        $this->balance = 0;
+        $this->coins_introduced = [];
+
+        session([
+            'balance' => $this->balance,
+            'coins_introduced' => $this->coins_introduced,
+        ]);
+    }
 }
