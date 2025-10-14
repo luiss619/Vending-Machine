@@ -6,7 +6,6 @@ This project models a vending machine and its internal state during operation. T
 
 - PHP 8.3
 - Composer
-- Optional: MySQL or MariaDB if you want to persist sessions
 - PHP extensions required by Laravel: `mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`
 
 ## Features
@@ -139,4 +138,150 @@ vending-machine
 ├─ composer.json
 ├─ composer.lock
 └─ README.md
+```
+
+## Running Tests
+
+To run the unit and feature tests, use:
+
+```bash
+php artisan test
+```
+
+## Examples
+
+### CUSTOMER MODE
+
+```bash
+Example 1: 
+Add 0.05 € x1
+Add 0.10 € x1
+Add 0.25 € x1
+Add 1.00 € x1
+Balance: 1.40 €
+
+Press return coins
+
+Result: 
+Balance: 0.00 €
+Coins returned:
+1 x 0.05 €
+1 x 0.10 €
+1 x 0.25 €
+1 x 1.00 €
+```
+
+```bash
+Example 2: 
+Balance: 0.00 €
+
+Press return coins
+
+Result: 
+Balance: 0.00 €
+There are no coins to return
+```
+
+```bash
+Example 3: 
+Add 0.10 € x6
+Balance: 0.60 €
+
+Press image watter
+
+Result: 
+Balance: 0.60 €
+Not enough money for Water.
+Missing: 0.05 €
+```
+
+```bash
+Example 4:
+Add 0.05 € x1
+Add 0.10 € x6
+Balance: 0.65 €
+
+Press image watter
+
+Result: 
+Balance: 0.00 €
+You bought Water
+Your change is 0.00 €
+```
+
+```bash
+Example 5:
+Add 0.10 € x7
+Balance: 0.70 €
+
+Press image watter
+
+Result: 
+Balance: 0.00 €
+You bought Water
+Your change is 0.05 €
+Coin: 0.05 € x 1
+```
+
+### SERVICE MODE
+
+```bash
+Example 6:
+WATER Stock: 5
+
+Press Add Stock +1
+
+Result: 
+WATER Stock: 6
+```
+
+```bash
+Example 7:
+WATER Stock: 5
+
+Press Remove Stock -1
+
+Result: 
+WATER Stock: 4
+```
+
+```bash
+Example 8:
+WATER Stock: 0
+
+Press Remove Stock -1
+
+Result: 
+Cannot remove 1 of water stock.
+```
+
+```bash
+Example 9:
+0.05 € Coin in machine: 10
+
+Press Add +1
+
+Result: 
+0.05 € Coin in machine: 11
+```
+
+```bash
+Example 10:
+0.05 € Coin in machine: 10
+
+Press Remove -1
+
+Result: 
+0.05 € Coin in machine: 9
+```
+
+```bash
+Example 11:
+0.05 € Coin in machine: 0
+
+Press Remove -1
+
+Result: 
+Cannot remove 1 coin of 0.05 €.
+No coins available.
 ```
