@@ -7,6 +7,7 @@ This project models a vending machine and its internal state during operation. T
 - PHP 8.3
 - Composer
 - PHP extensions required by Laravel: `mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`
+- Docker & Docker Compose (if using containerized version)
 
 ## Features
 
@@ -54,6 +55,26 @@ php artisan serve
 ```
 
 Open http://127.0.0.1:8000 to interact with the machine.
+
+## Running with Docker
+
+1. Build and start containers:
+```bash
+docker-compose up --build -d
+```
+
+2. Copy .env and generate the app key inside the container:
+```bash
+docker-compose exec app cp .env.example .env
+docker-compose exec app php artisan key:generate
+```
+
+3. Access the application:
+```bash
+docker-compose up --build -d
+```
+
+Open http://localhost:8000 in your browser.
 
 ## Estructure
 
@@ -146,6 +167,12 @@ To run the unit and feature tests, use:
 
 ```bash
 php artisan test
+```
+
+Or inside Docker:
+
+```bash
+docker-compose exec app php artisan test
 ```
 
 ## Examples
