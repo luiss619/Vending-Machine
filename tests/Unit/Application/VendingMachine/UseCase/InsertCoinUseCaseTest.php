@@ -4,8 +4,8 @@ namespace Tests\Unit\Application\VendingMachine\UseCase;
 
 use App\Application\VendingMachine\DTO\InsertCoinRequestDTO;
 use App\Application\VendingMachine\UseCase\InsertCoinUseCase;
-use Tests\Fakes\FakeVendingMachineService;
 use Tests\TestCase;
+use Tests\Fakes\FakeVendingMachineService;
 
 class InsertCoinUseCaseTest extends TestCase
 {

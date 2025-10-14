@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\VendingMachine\UseCase;
 
-use App\Application\VendingMachine\UseCase\BuyItemUseCase;
 use App\Application\VendingMachine\DTO\BuyItemRequestDTO;
 use App\Application\VendingMachine\DTO\BuyItemResponseDTO;
 use App\Application\VendingMachine\DTO\ErrorResponseDTO;
+use App\Application\VendingMachine\UseCase\BuyItemUseCase;
 use App\Domain\VendingMachine\Entity\Coin;
 use Tests\TestCase;
 use Tests\Fakes\FakeVendingMachineService;

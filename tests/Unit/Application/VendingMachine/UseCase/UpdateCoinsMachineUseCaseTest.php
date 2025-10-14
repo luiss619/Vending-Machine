@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\VendingMachine\UseCase;
 
+use App\Application\VendingMachine\DTO\UpdateCoinsMachineRequestDTO;
 use App\Application\VendingMachine\UseCase\UpdateCoinsMachineUseCase;
 use App\Domain\VendingMachine\Entity\Coin;
 use Tests\TestCase;
 use Tests\Fakes\FakeVendingMachineService;
-use App\Application\VendingMachine\DTO\UpdateCoinsMachineRequestDTO;
 
 class UpdateCoinsMachineUseCaseTest extends TestCase
 {

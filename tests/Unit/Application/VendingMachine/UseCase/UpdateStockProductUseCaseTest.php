@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\VendingMachine\UseCase;
 
-use App\Application\VendingMachine\UseCase\UpdateStockProductUseCase;
 use App\Application\VendingMachine\DTO\UpdateStockRequestDTO;
-use PHPUnit\Framework\TestCase;
+use App\Application\VendingMachine\UseCase\UpdateStockProductUseCase;
+use Tests\TestCase;
 use Tests\Fakes\FakeVendingMachineService;
 
 class UpdateStockProductUseCaseTest extends TestCase
