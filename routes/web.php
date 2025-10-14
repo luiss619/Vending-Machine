@@ -3,9 +3,7 @@
 use App\Infrastructure\Http\Controllers\VendingMachineController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [VendingMachineController::class, 'index']);
 
 Route::prefix('vending')->group(function () {
     Route::get('/', [VendingMachineController::class, 'index']);
