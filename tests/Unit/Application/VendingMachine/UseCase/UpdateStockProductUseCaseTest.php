@@ -17,9 +17,9 @@ class UpdateStockProductUseCaseTest extends TestCase
             sku: FakeVendingMachineService::$DEFAULT_PRODUCTS_DATA[1]['sku'],
             operation: FakeVendingMachineService::$AVAILABLE_METHODS[0]
         );
-        //$response = $useCase->execute($dto);
+        $response = $useCase->execute($dto);
 
-        //$this->assertSame(FakeVendingMachineService::$DEFAULT_PRODUCTS_DATA[1]['sku'] + 1, $response->new_stock);
+        $this->assertSame(FakeVendingMachineService::$DEFAULT_PRODUCTS_DATA[1]['stock'] + 1, $response->new_stock);
     }
 
     public function test_error_invalid_sku(): void
