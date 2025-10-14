@@ -58,6 +58,7 @@ Open http://127.0.0.1:8000 to interact with the machine.
 
 ## Estructure
 
+```bash
 vending-machine
 ├─ app
 │  ├─ Application
@@ -138,3 +139,4 @@ vending-machine
 ├─ composer.json
 ├─ composer.lock
 └─ README.md
+```
