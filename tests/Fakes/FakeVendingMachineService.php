@@ -23,7 +23,7 @@ class FakeVendingMachineService extends VendingMachineService
         ['value' => 1.00, 'quantity' => 20],
     ];
     public static array $DEFAULT_COINS_INTRODUCED_DATA = [
-        ['value' => 0.10, 'quantity' => 6],
+        ['value' => 0.10, 'quantity' => 5],
     ];
 
     public function __construct()
