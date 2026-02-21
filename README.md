@@ -31,8 +31,8 @@ This project models a vending machine and its internal state during operation. T
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/luiss619/Vending-Machine
-cd vending-machine
+git clone https://github.com/luiss619/dinowebb.vending-machine
+cd dinowebb.vending-machine
 ```
 
 2. Install dependencies:
@@ -56,30 +56,10 @@ php artisan serve
 
 Open http://127.0.0.1:8000 to interact with the machine.
 
-## Running with Docker
-
-1. Build and start containers:
-```bash
-docker-compose up --build -d
-```
-
-2. Copy .env and generate the app key inside the container:
-```bash
-docker-compose exec app cp .env.example .env
-docker-compose exec app php artisan key:generate
-```
-
-3. Access the application:
-```bash
-docker-compose up --build -d
-```
-
-Open http://localhost:8000 in your browser.
-
 ## Estructure
 
 ```bash
-vending-machine
+dinowebb.vending-machine
 ├─ app
 │  ├─ Application
 │  │  └─ VendingMachine
