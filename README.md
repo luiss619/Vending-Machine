@@ -56,26 +56,6 @@ php artisan serve
 
 Open http://127.0.0.1:8000 to interact with the machine.
 
-## Running with Docker
-
-1. Build and start containers:
-```bash
-docker-compose up --build -d
-```
-
-2. Copy .env and generate the app key inside the container:
-```bash
-docker-compose exec app cp .env.example .env
-docker-compose exec app php artisan key:generate
-```
-
-3. Access the application:
-```bash
-docker-compose up --build -d
-```
-
-Open http://localhost:8000 in your browser.
-
 ## Estructure
 
 ```bash
