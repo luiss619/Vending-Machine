@@ -1,14 +1,10 @@
-version: "3.9"
-
 services:
-  app:
+  web:
     build: .
-    container_name: vending-machine
+    container_name: dinowebb.vending-machine
     ports:
-      - "8000:8000"
+      - "8001:80"
     volumes:
       - .:/var/www/html
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - APP_KEY=base64:fakekey
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
