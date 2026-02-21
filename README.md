@@ -31,8 +31,8 @@ This project models a vending machine and its internal state during operation. T
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/luiss619/Vending-Machine
-cd vending-machine
+git clone https://github.com/luiss619/dinowebb.vending-machine
+cd dinowebb.vending-machine
 ```
 
 2. Install dependencies:
@@ -59,7 +59,7 @@ Open http://127.0.0.1:8000 to interact with the machine.
 ## Estructure
 
 ```bash
-vending-machine
+dinowebb.vending-machine
 ├─ app
 │  ├─ Application
 │  │  └─ VendingMachine
